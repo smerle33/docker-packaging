@@ -12,7 +12,7 @@ LABEL project="https://github.com/jenkins-infra/docker-packaging"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 ## Always install the latest package versions
 # hadolint ignore=DL3008,DL3013
@@ -94,7 +94,7 @@ RUN apt-get update \
 # Repeat ARG to scope it in this stage
 ARG BUILD_JDK_MAJOR=17
 ENV JAVA_HOME=/opt/jdk-"${BUILD_JDK_MAJOR}"
-ENV PATH "${JAVA_HOME}/bin:${PATH}"
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ## Note: when using the same major versions, the temurin JDK overrides the agent JDK.
 ##    We need to keep this behavior as both JDK can differ. The long term solution is to switch this image to the "all in one".
@@ -141,11 +141,11 @@ RUN mkdir "${HOME}"/.ssh \
 
 RUN git config --global pull.rebase false
 
+ARG JENKINS_AGENT_VERSION=3307.v632ed11b_3a_c7-2
 LABEL io.jenkins-infra.tools="bash,debhelper,fakeroot,git,gpg,gh,jx-release-version,java,jv,jenkins-agent,make"
 LABEL io.jenkins-infra.tools.gh.version="${GH_VERSION}"
 LABEL io.jenkins-infra.tools.jx-release-version.version="${JX_RELEASE_VERSION}"
 LABEL io.jenkins-infra.tools.jenkins-agent.version="${JENKINS_AGENT_VERSION}"
 LABEL io.jenkins-infra.tools.jv.version="${JV_VERSION}"
-
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
